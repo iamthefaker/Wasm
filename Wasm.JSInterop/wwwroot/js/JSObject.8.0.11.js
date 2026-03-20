@@ -74,9 +74,12 @@
     funcMap: [null],
     utf16Decoder: new TextDecoder("utf-16le"),
     ToJSString: function (pidentifier, length)
-    {   
+    {
         const memory = new Uint16Array(Module.HEAPU16.buffer, pidentifier, length);
-        return nkJSObject.utf16Decoder.decode(memory);
+        // TextDecoder rejects SharedArrayBuffer-backed views (multi-threaded WASM).
+        // slice() copies to a regular ArrayBuffer.
+        const view = (memory.buffer instanceof SharedArrayBuffer) ? memory.slice() : memory;
+        return nkJSObject.utf16Decoder.decode(view);
     },
     JSRegisterFunction: function (pidentifier, length)
     {
