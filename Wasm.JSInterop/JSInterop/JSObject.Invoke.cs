@@ -9,44 +9,114 @@ namespace nkast.Wasm.JSInterop
     {
         private static Dictionary<string, int> _fidMap = new Dictionary<string, int>();
 
-        [JSImport("globalThis.window.nkJSObject.JSRegisterFunction")]
-        private static partial int JSRegisterFunction(int pidentifier, int identifierLength);
+        // --- JSImport native entry points (renamed to *_Impl for command buffer wrapping) ---
 
-        [JSImport("globalThis.window.nkJSObject.JSInvoke0Int")]
-        private static partial int JSInvoke0Int(int fid);
+        [JSImport("globalThis.nkJSObject.JSRegisterFunction")]
+        private static partial int JSRegisterFunction_Impl(int pidentifier, int identifierLength);
 
-        [JSImport("globalThis.window.nkJSObject.JSInvoke1Void")]
+        [JSImport("globalThis.nkJSObject.JSInvoke0Int")]
+        private static partial int JSInvoke0Int_Impl(int fid);
+
+        [JSImport("globalThis.nkJSObject.JSInvoke1Void")]
         private static partial void JSInvoke1Void(int fid, int uid);
 
-        [JSImport("globalThis.window.nkJSObject.JSInvoke1Bool")]
-        private static partial bool JSInvoke1Bool(int fid, int uid);
+        [JSImport("globalThis.nkJSObject.JSInvoke1Bool")]
+        private static partial bool JSInvoke1Bool_Impl(int fid, int uid);
 
-        [JSImport("globalThis.window.nkJSObject.JSInvoke1Int")]
-        private static partial int JSInvoke1Int(int fid, int uid);
+        [JSImport("globalThis.nkJSObject.JSInvoke1Int")]
+        private static partial int JSInvoke1Int_Impl(int fid, int uid);
 
-        [JSImport("globalThis.window.nkJSObject.JSInvoke1Float")]
-        private static partial float JSInvoke1Float(int fid, int uid);
+        [JSImport("globalThis.nkJSObject.JSInvoke1Float")]
+        private static partial float JSInvoke1Float_Impl(int fid, int uid);
 
-        [JSImport("globalThis.window.nkJSObject.JSInvoke1Double")]
-        private static partial double JSInvoke1Double(int fid, int uid);
+        [JSImport("globalThis.nkJSObject.JSInvoke1Double")]
+        private static partial double JSInvoke1Double_Impl(int fid, int uid);
 
-        [JSImport("globalThis.window.nkJSObject.JSInvoke1String")]
-        private static partial string JSInvoke1String(int fid, int uid);
+        [JSImport("globalThis.nkJSObject.JSInvoke1String")]
+        private static partial string JSInvoke1String_Impl(int fid, int uid);
 
-        [JSImport("globalThis.window.nkJSObject.JSInvoke2Void")]
+        [JSImport("globalThis.nkJSObject.JSInvoke2Void")]
         private static partial void JSInvoke2Void(int fid, int uid, int d);
 
-        [JSImport("globalThis.window.nkJSObject.JSInvoke2Bool")]
-        private static partial bool JSInvoke2Bool(int fid, int uid, int d);
+        [JSImport("globalThis.nkJSObject.JSInvoke2Bool")]
+        private static partial bool JSInvoke2Bool_Impl(int fid, int uid, int d);
 
-        [JSImport("globalThis.window.nkJSObject.JSInvoke2Int")]
-        private static partial int JSInvoke2Int(int fid, int uid, int d);
+        [JSImport("globalThis.nkJSObject.JSInvoke2Int")]
+        private static partial int JSInvoke2Int_Impl(int fid, int uid, int d);
 
-        [JSImport("globalThis.window.nkJSObject.JSInvoke2Float")]
-        private static partial float JSInvoke2Float(int fid, int uid, int d);
+        [JSImport("globalThis.nkJSObject.JSInvoke2Float")]
+        private static partial float JSInvoke2Float_Impl(int fid, int uid, int d);
 
-        [JSImport("globalThis.window.nkJSObject.JSInvoke2String")]
-        private static partial string JSInvoke2String(int fid, int uid, int d);
+        [JSImport("globalThis.nkJSObject.JSInvoke2String")]
+        private static partial string JSInvoke2String_Impl(int fid, int uid, int d);
+
+        // --- Wrappers: return-type methods flush the command buffer before proxying ---
+
+        private static int JSRegisterFunction(int pidentifier, int identifierLength)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            return JSRegisterFunction_Impl(pidentifier, identifierLength);
+        }
+
+        private static int JSInvoke0Int(int fid)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            return JSInvoke0Int_Impl(fid);
+        }
+
+        private static bool JSInvoke1Bool(int fid, int uid)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            return JSInvoke1Bool_Impl(fid, uid);
+        }
+
+        private static int JSInvoke1Int(int fid, int uid)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            return JSInvoke1Int_Impl(fid, uid);
+        }
+
+        private static float JSInvoke1Float(int fid, int uid)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            return JSInvoke1Float_Impl(fid, uid);
+        }
+
+        private static double JSInvoke1Double(int fid, int uid)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            return JSInvoke1Double_Impl(fid, uid);
+        }
+
+        private static string JSInvoke1String(int fid, int uid)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            return JSInvoke1String_Impl(fid, uid);
+        }
+
+        private static bool JSInvoke2Bool(int fid, int uid, int d)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            return JSInvoke2Bool_Impl(fid, uid, d);
+        }
+
+        private static int JSInvoke2Int(int fid, int uid, int d)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            return JSInvoke2Int_Impl(fid, uid, d);
+        }
+
+        private static float JSInvoke2Float(int fid, int uid, int d)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            return JSInvoke2Float_Impl(fid, uid, d);
+        }
+
+        private static string JSInvoke2String(int fid, int uid, int d)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            return JSInvoke2String_Impl(fid, uid, d);
+        }
 
 
         private static unsafe int RegisterFunction(string identifier)
@@ -84,6 +154,7 @@ namespace nkast.Wasm.JSInterop
         protected void Invoke(string identifier)
         {
             int fid = RegisterFunction(identifier);
+            if (GLCommandBuffer.Enabled) { GLCommandBuffer.WriteVoid0(fid, Uid); return; }
             JSInvoke1Void(fid, Uid);
         }
 
@@ -121,6 +192,7 @@ namespace nkast.Wasm.JSInterop
         {
             int fid = RegisterFunction(identifier);
             var args = ValueTuple.Create(arg1, Net7Padding);
+            if (GLCommandBuffer.Enabled) { GLCommandBuffer.WriteVoid(fid, Uid, (int)&args, 2); return; }
             JSInvoke2Void(fid, Uid, (int)&args);
         }
 
@@ -157,6 +229,7 @@ namespace nkast.Wasm.JSInterop
         {
             int fid = RegisterFunction(identifier);
             var args = ValueTuple.Create(arg1, arg2);
+            if (GLCommandBuffer.Enabled) { GLCommandBuffer.WriteVoid(fid, Uid, (int)&args, 2); return; }
             JSInvoke2Void(fid, Uid, (int)&args);
         }
 
@@ -192,6 +265,7 @@ namespace nkast.Wasm.JSInterop
         {
             int fid = RegisterFunction(identifier);
             var args = ValueTuple.Create(arg1, arg2, arg3);
+            if (GLCommandBuffer.Enabled) { GLCommandBuffer.WriteVoid(fid, Uid, (int)&args, 3); return; }
             JSInvoke2Void(fid, Uid, (int)&args);
         }
 
@@ -227,6 +301,7 @@ namespace nkast.Wasm.JSInterop
         {
             int fid = RegisterFunction(identifier);
             var args = ValueTuple.Create(arg1, arg2, arg3, arg4);
+            if (GLCommandBuffer.Enabled) { GLCommandBuffer.WriteVoid(fid, Uid, (int)&args, 4); return; }
             JSInvoke2Void(fid, Uid, (int)&args);
         }
 
@@ -262,6 +337,7 @@ namespace nkast.Wasm.JSInterop
         {
             int fid = RegisterFunction(identifier);
             var args = ValueTuple.Create(arg1, arg2, arg3, arg4, arg5);
+            if (GLCommandBuffer.Enabled) { GLCommandBuffer.WriteVoid(fid, Uid, (int)&args, 5); return; }
             JSInvoke2Void(fid, Uid, (int)&args);
         }
 
@@ -297,6 +373,7 @@ namespace nkast.Wasm.JSInterop
         {
             int fid = RegisterFunction(identifier);
             var args = ValueTuple.Create(arg1, arg2, arg3, arg4, arg5, arg6);
+            if (GLCommandBuffer.Enabled) { GLCommandBuffer.WriteVoid(fid, Uid, (int)&args, 6); return; }
             JSInvoke2Void(fid, Uid, (int)&args);
         }
 
@@ -332,6 +409,7 @@ namespace nkast.Wasm.JSInterop
         {
             int fid = RegisterFunction(identifier);
             var args = ValueTuple.Create(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            if (GLCommandBuffer.Enabled) { GLCommandBuffer.WriteVoid(fid, Uid, (int)&args, 7); return; }
             JSInvoke2Void(fid, Uid, (int)&args);
         }
 
@@ -367,6 +445,7 @@ namespace nkast.Wasm.JSInterop
         {
             int fid = RegisterFunction(identifier);
             var args = new FixedStruct8<T1, T2, T3, T4, T5, T6, T7, T8>(arg1,arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+            if (GLCommandBuffer.Enabled) { GLCommandBuffer.WriteVoid(fid, Uid, (int)&args, 8); return; }
             JSInvoke2Void(fid, Uid, (int)&args);
         }
 
@@ -402,6 +481,7 @@ namespace nkast.Wasm.JSInterop
         {
             int fid = RegisterFunction(identifier);
             var args = new FixedStruct9<T1, T2, T3, T4, T5, T6, T7, T8, T9>(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+            if (GLCommandBuffer.Enabled) { GLCommandBuffer.WriteVoid(fid, Uid, (int)&args, 9); return; }
             JSInvoke2Void(fid, Uid, (int)&args);
         }
 
@@ -437,6 +517,7 @@ namespace nkast.Wasm.JSInterop
         {
             int fid = RegisterFunction(identifier);
             var args = new FixedStructA<T1, T2, T3, T4, T5, T6, T7, T8, T9, TA>(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, argA);
+            if (GLCommandBuffer.Enabled) { GLCommandBuffer.WriteVoid(fid, Uid, (int)&args, 10); return; }
             JSInvoke2Void(fid, Uid, (int)&args);
         }
 
@@ -466,6 +547,75 @@ namespace nkast.Wasm.JSInterop
             int fid = RegisterFunction(identifier);
             var args = new FixedStructA<T1, T2, T3, T4, T5, T6, T7, T8, T9, TA>(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, argA);
             return JSInvoke2String(fid, Uid, (int)&args);
+        }
+    
+
+        // --- InvokeDirect: flush buffer then execute immediately ---
+        // Used for GL calls that pass data pointers (arrays) which may be
+        // invalid by the time a deferred flush executes.
+
+        protected unsafe void InvokeDirect<T1, T2, T3>(string identifier, T1 arg1, T2 arg2, T3 arg3)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            int fid = RegisterFunction(identifier);
+            var args = ValueTuple.Create(arg1, arg2, arg3);
+            JSInvoke2Void(fid, Uid, (int)&args);
+        }
+
+        protected unsafe void InvokeDirect<T1, T2, T3, T4>(string identifier, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            int fid = RegisterFunction(identifier);
+            var args = ValueTuple.Create(arg1, arg2, arg3, arg4);
+            JSInvoke2Void(fid, Uid, (int)&args);
+        }
+
+        protected unsafe void InvokeDirect<T1, T2, T3, T4, T5>(string identifier, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            int fid = RegisterFunction(identifier);
+            var args = ValueTuple.Create(arg1, arg2, arg3, arg4, arg5);
+            JSInvoke2Void(fid, Uid, (int)&args);
+        }
+
+        protected unsafe void InvokeDirect<T1, T2, T3, T4, T5, T6>(string identifier, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            int fid = RegisterFunction(identifier);
+            var args = ValueTuple.Create(arg1, arg2, arg3, arg4, arg5, arg6);
+            JSInvoke2Void(fid, Uid, (int)&args);
+        }
+
+        protected unsafe void InvokeDirect<T1, T2, T3, T4, T5, T6, T7>(string identifier, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            int fid = RegisterFunction(identifier);
+            var args = ValueTuple.Create(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            JSInvoke2Void(fid, Uid, (int)&args);
+        }
+
+        protected unsafe void InvokeDirect<T1, T2, T3, T4, T5, T6, T7, T8>(string identifier, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            int fid = RegisterFunction(identifier);
+            var args = new FixedStruct8<T1, T2, T3, T4, T5, T6, T7, T8>(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+            JSInvoke2Void(fid, Uid, (int)&args);
+        }
+
+        protected unsafe void InvokeDirect<T1, T2, T3, T4, T5, T6, T7, T8, T9>(string identifier, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            int fid = RegisterFunction(identifier);
+            var args = new FixedStruct9<T1, T2, T3, T4, T5, T6, T7, T8, T9>(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+            JSInvoke2Void(fid, Uid, (int)&args);
+        }
+
+        protected unsafe void InvokeDirect<T1, T2, T3, T4, T5, T6, T7, T8, T9, TA>(string identifier, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, TA argA)
+        {
+            if (GLCommandBuffer.Enabled) GLCommandBuffer.Flush();
+            int fid = RegisterFunction(identifier);
+            var args = new FixedStructA<T1, T2, T3, T4, T5, T6, T7, T8, T9, TA>(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, argA);
+            JSInvoke2Void(fid, Uid, (int)&args);
         }
     }
 

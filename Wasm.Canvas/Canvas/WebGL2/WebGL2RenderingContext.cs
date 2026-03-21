@@ -77,19 +77,19 @@ namespace nkast.Wasm.Canvas.WebGL
         public void GetBufferSubData<TData>(WebGLBufferType target, int offset, TData[] dstData) where TData : struct
         {
             int stride = Marshal.SizeOf<TData>();
-            Invoke("nkCanvasGL2Context.GetBufferSubData", (int)target, offset, stride, dstData);
+            InvokeDirect("nkCanvasGL2Context.GetBufferSubData", (int)target, offset, stride, dstData);
         }
 
         public void GetBufferSubData<TData>(WebGLBufferType target, int offset, TData[] dstData, int startIndex) where TData : struct
         {
             int stride = Marshal.SizeOf<TData>();
-            Invoke("nkCanvasGL2Context.GetBufferSubData1", (int)target, offset, startIndex, stride, dstData);
+            InvokeDirect("nkCanvasGL2Context.GetBufferSubData1", (int)target, offset, startIndex, stride, dstData);
         }
 
         public void GetBufferSubData<TData>(WebGLBufferType target, int offset, TData[] dstData, int startIndex, int length) where TData : struct
         {
             int stride = Marshal.SizeOf<TData>();
-            Invoke("nkCanvasGL2Context.GetBufferSubData2", (int)target, offset, startIndex, length, stride, dstData);
+            InvokeDirect("nkCanvasGL2Context.GetBufferSubData2", (int)target, offset, startIndex, length, stride, dstData);
         }
 
         public void RenderbufferStorage(WebGLRenderbufferType target, WebGL2RenderbufferInternalFormat internalFormat, int width, int height)

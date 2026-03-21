@@ -48,12 +48,12 @@
     },
     DisposeObject: function(uid)
     {
-        var obj = nkJSObject.objectMap[uid];   
-                
+        var obj = nkJSObject.objectMap[uid];
+
         if (obj === undefined)
-            throw "obj is undefined";
+            return; // Already disposed — silently ignore
         if (obj.nkUid !== uid)
-            throw "invalid nkUid";
+            return; // Invalid uid — silently ignore
 
         delete obj.nkUid;
         delete nkJSObject.objectMap[uid];

@@ -28,10 +28,20 @@ namespace nkast.Wasm.Canvas
         {
         }
 
+        public OffscreenCanvas(int uid, bool fromExisting) : base(uid)
+        {
+        }
+
         private static int Register(int width, int height)
         {
             int uid = JSObject.StaticInvokeRetInt("nkOffscreenCanvas.Create", width, height);
             return uid;
+        }
+
+        public void SetExistingWebGL2Context(int glContextUid)
+        {
+            if (glContextUid > 0)
+                _webgl2RenderingContext = new WebGL.WebGL2RenderingContext(null, glContextUid);
         }
 
         public TContext GetContext<TContext>()
@@ -78,7 +88,7 @@ namespace nkast.Wasm.Canvas
                 if (_webgl2RenderingContext != null)
                     return (TContext)(WebGL.IWebGL2RenderingContext)_webgl2RenderingContext;
 
-                int uid = InvokeRetInt("nkCanvas.CreateWebGL2Context");
+                int uid = InvokeRetInt("nkOffscreenCanvas.CreateWebGL2Context");
                 if (uid > 0)
                     _webgl2RenderingContext = new WebGL.WebGL2RenderingContext(null, uid);
 
