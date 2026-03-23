@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using nkast.Wasm.Dom;
+using nkast.Wasm.JSInterop;
 
 namespace nkast.Wasm.Canvas.WebGL
 {
@@ -391,74 +392,140 @@ namespace nkast.Wasm.Canvas.WebGL
             Invoke("nkCanvasGLContext.Uniform4f", location.Uid, v0, v1, v2, v3);
         }
 
-        public void Uniform1iv<TData>(WebGLUniformLocation location, TData[] value)
+        public unsafe void Uniform1iv<TData>(WebGLUniformLocation location, TData[] value)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int dataLen = value.Length * stride / sizeof(int);
+                fixed (TData* ptr = value) { InvokeInline2("nkCanvasGLContext.Uniform1iv_B", location.Uid, dataLen, (int*)ptr, dataLen); }
+                return;
+            }
             InvokeDirect("nkCanvasGLContext.Uniform1iv", location.Uid, stride, value);
         }
-        public void Uniform2iv<TData>(WebGLUniformLocation location, TData[] value)
+        public unsafe void Uniform2iv<TData>(WebGLUniformLocation location, TData[] value)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int dataLen = value.Length * stride / sizeof(int);
+                fixed (TData* ptr = value) { InvokeInline2("nkCanvasGLContext.Uniform2iv_B", location.Uid, dataLen, (int*)ptr, dataLen); }
+                return;
+            }
             InvokeDirect("nkCanvasGLContext.Uniform2iv", location.Uid, stride, value);
         }
-        public void Uniform3iv<TData>(WebGLUniformLocation location, TData[] value)
+        public unsafe void Uniform3iv<TData>(WebGLUniformLocation location, TData[] value)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int dataLen = value.Length * stride / sizeof(int);
+                fixed (TData* ptr = value) { InvokeInline2("nkCanvasGLContext.Uniform3iv_B", location.Uid, dataLen, (int*)ptr, dataLen); }
+                return;
+            }
             InvokeDirect("nkCanvasGLContext.Uniform3iv", location.Uid, stride, value);
         }
-        public void Uniform4iv<TData>(WebGLUniformLocation location, TData[] value)
+        public unsafe void Uniform4iv<TData>(WebGLUniformLocation location, TData[] value)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int dataLen = value.Length * stride / sizeof(int);
+                fixed (TData* ptr = value) { InvokeInline2("nkCanvasGLContext.Uniform4iv_B", location.Uid, dataLen, (int*)ptr, dataLen); }
+                return;
+            }
             InvokeDirect("nkCanvasGLContext.Uniform4iv", location.Uid, stride, value);
         }
 
-        public void Uniform1fv<TData>(WebGLUniformLocation location, TData[] value)
+        public unsafe void Uniform1fv<TData>(WebGLUniformLocation location, TData[] value)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int dataLen = value.Length * stride / sizeof(int);
+                fixed (TData* ptr = value) { InvokeInline2("nkCanvasGLContext.Uniform1fv_B", location.Uid, dataLen, (int*)ptr, dataLen); }
+                return;
+            }
             InvokeDirect("nkCanvasGLContext.Uniform1fv", location.Uid, stride, value);
         }
-        public void Uniform2fv<TData>(WebGLUniformLocation location, TData[] value)
+        public unsafe void Uniform2fv<TData>(WebGLUniformLocation location, TData[] value)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int dataLen = value.Length * stride / sizeof(int);
+                fixed (TData* ptr = value) { InvokeInline2("nkCanvasGLContext.Uniform2fv_B", location.Uid, dataLen, (int*)ptr, dataLen); }
+                return;
+            }
             InvokeDirect("nkCanvasGLContext.Uniform2fv", location.Uid, stride, value);
         }
-        public void Uniform3fv<TData>(WebGLUniformLocation location, TData[] value)
+        public unsafe void Uniform3fv<TData>(WebGLUniformLocation location, TData[] value)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int dataLen = value.Length * stride / sizeof(int);
+                fixed (TData* ptr = value) { InvokeInline2("nkCanvasGLContext.Uniform3fv_B", location.Uid, dataLen, (int*)ptr, dataLen); }
+                return;
+            }
             InvokeDirect("nkCanvasGLContext.Uniform3fv", location.Uid, stride, value);
         }
-        public void Uniform4fv<TData>(WebGLUniformLocation location, TData[] value)
+        public unsafe void Uniform4fv<TData>(WebGLUniformLocation location, TData[] value)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int dataLen = value.Length * stride / sizeof(int);
+                fixed (TData* ptr = value) { InvokeInline2("nkCanvasGLContext.Uniform4fv_B", location.Uid, dataLen, (int*)ptr, dataLen); }
+                return;
+            }
             InvokeDirect("nkCanvasGLContext.Uniform4fv", location.Uid, stride, value);
         }
 
-        public void UniformMatrix2fv<TData>(WebGLUniformLocation location, TData[] value)
+        public unsafe void UniformMatrix2fv<TData>(WebGLUniformLocation location, TData[] value)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int dataLen = value.Length * stride / sizeof(int);
+                fixed (TData* ptr = value) { InvokeInline2("nkCanvasGLContext.UniformMatrix2fv_B", location.Uid, dataLen, (int*)ptr, dataLen); }
+                return;
+            }
             InvokeDirect("nkCanvasGLContext.UniformMatrix2fv", location.Uid, stride, value);
         }
 
-        public void UniformMatrix3fv<TData>(WebGLUniformLocation location, TData[] value)
+        public unsafe void UniformMatrix3fv<TData>(WebGLUniformLocation location, TData[] value)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int dataLen = value.Length * stride / sizeof(int);
+                fixed (TData* ptr = value) { InvokeInline2("nkCanvasGLContext.UniformMatrix3fv_B", location.Uid, dataLen, (int*)ptr, dataLen); }
+                return;
+            }
             InvokeDirect("nkCanvasGLContext.UniformMatrix3fv", location.Uid, stride, value);
         }
 
-        public void UniformMatrix4fv<TData>(WebGLUniformLocation location, TData[] value)
+        public unsafe void UniformMatrix4fv<TData>(WebGLUniformLocation location, TData[] value)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int dataLen = value.Length * stride / sizeof(int);
+                fixed (TData* ptr = value) { InvokeInline2("nkCanvasGLContext.UniformMatrix4fv_B", location.Uid, dataLen, (int*)ptr, dataLen); }
+                return;
+            }
             InvokeDirect("nkCanvasGLContext.UniformMatrix4fv", location.Uid, stride, value);
         }
 
@@ -472,24 +539,64 @@ namespace nkast.Wasm.Canvas.WebGL
             Invoke("nkCanvasGLContext.BufferData", (int)type, size, (int)usage);
         }
 
-        public void BufferData<TData>(WebGLBufferType type, TData[] data, WebGLBufferUsageHint usage)
+        public unsafe void BufferData<TData>(WebGLBufferType type, TData[] data, WebGLBufferUsageHint usage)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int byteLen = data.Length * stride;
+                int dataInts = (byteLen + 3) / 4;
+                if (dataInts <= GLCommandBuffer.MAX_INLINE_INTS)
+                {
+                    fixed (TData* ptr = data)
+                    {
+                        InvokeInline3("nkCanvasGLContext.BufferData1_B", (int)type, (int)usage, byteLen, (int*)ptr, dataInts);
+                    }
+                    return;
+                }
+            }
             InvokeDirect("nkCanvasGLContext.BufferData1", (int)type, (int)usage, stride, data);
         }
 
-        public void BufferSubData<TData>(WebGLBufferType target, int offset, TData[] srcData, int length)
+        public unsafe void BufferSubData<TData>(WebGLBufferType target, int offset, TData[] srcData, int length)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int byteLen = length * stride;
+                int dataInts = (byteLen + 3) / 4;
+                if (dataInts <= GLCommandBuffer.MAX_INLINE_INTS)
+                {
+                    fixed (TData* ptr = srcData)
+                    {
+                        InvokeInline3("nkCanvasGLContext.BufferSubData_B", (int)target, offset, byteLen, (int*)ptr, dataInts);
+                    }
+                    return;
+                }
+            }
             InvokeDirect("nkCanvasGLContext.BufferSubData", (int)target, offset, length, stride, srcData);
         }
 
-        public void BufferSubData<TData>(WebGLBufferType target, int offset, TData[] srcData, int startIndex, int length)
+        public unsafe void BufferSubData<TData>(WebGLBufferType target, int offset, TData[] srcData, int startIndex, int length)
             where TData : struct
         {
             var stride = Marshal.SizeOf<TData>();
+            if (GLCommandBuffer.ShouldBuffer)
+            {
+                int byteLen = length * stride;
+                int dataInts = (byteLen + 3) / 4;
+                if (dataInts <= GLCommandBuffer.MAX_INLINE_INTS)
+                {
+                    fixed (TData* ptr = srcData)
+                    {
+                        byte* src = (byte*)ptr + startIndex * stride;
+                        InvokeInline3("nkCanvasGLContext.BufferSubData_B", (int)target, offset, byteLen, (int*)src, dataInts);
+                    }
+                    return;
+                }
+            }
             InvokeDirect("nkCanvasGLContext.BufferSubData1", (int)target, offset, startIndex, length, stride, srcData);
         }
 

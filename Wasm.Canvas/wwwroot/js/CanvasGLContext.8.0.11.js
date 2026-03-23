@@ -554,7 +554,77 @@ window.nkCanvasGLContext =
         var ul = nkJSObject.GetObject(uluid);
         gc.uniformMatrix4fv(ul, false, dt);
     },
-    
+
+    // --- Inline-buffered uniform handlers (_B suffix) ---
+    // These read data directly from the command buffer args instead of via
+    // Blazor.platform.getArrayEntryPtr. Format: [uluid, count, data0..dataN]
+    Uniform1iv_B: function (uid, d) {
+        var gc = nkJSObject.GetObject(uid);
+        var ul = nkJSObject.GetObject(Module.HEAP32[(d)>>2]);
+        var count = Module.HEAP32[(d+4)>>2];
+        gc.uniform1iv(ul, new Int32Array(Module.HEAPU8.buffer, d+8, count));
+    },
+    Uniform2iv_B: function (uid, d) {
+        var gc = nkJSObject.GetObject(uid);
+        var ul = nkJSObject.GetObject(Module.HEAP32[(d)>>2]);
+        var count = Module.HEAP32[(d+4)>>2];
+        gc.uniform2iv(ul, new Int32Array(Module.HEAPU8.buffer, d+8, count));
+    },
+    Uniform3iv_B: function (uid, d) {
+        var gc = nkJSObject.GetObject(uid);
+        var ul = nkJSObject.GetObject(Module.HEAP32[(d)>>2]);
+        var count = Module.HEAP32[(d+4)>>2];
+        gc.uniform3iv(ul, new Int32Array(Module.HEAPU8.buffer, d+8, count));
+    },
+    Uniform4iv_B: function (uid, d) {
+        var gc = nkJSObject.GetObject(uid);
+        var ul = nkJSObject.GetObject(Module.HEAP32[(d)>>2]);
+        var count = Module.HEAP32[(d+4)>>2];
+        gc.uniform4iv(ul, new Int32Array(Module.HEAPU8.buffer, d+8, count));
+    },
+    Uniform1fv_B: function (uid, d) {
+        var gc = nkJSObject.GetObject(uid);
+        var ul = nkJSObject.GetObject(Module.HEAP32[(d)>>2]);
+        var count = Module.HEAP32[(d+4)>>2];
+        gc.uniform1fv(ul, new Float32Array(Module.HEAPU8.buffer, d+8, count));
+    },
+    Uniform2fv_B: function (uid, d) {
+        var gc = nkJSObject.GetObject(uid);
+        var ul = nkJSObject.GetObject(Module.HEAP32[(d)>>2]);
+        var count = Module.HEAP32[(d+4)>>2];
+        gc.uniform2fv(ul, new Float32Array(Module.HEAPU8.buffer, d+8, count));
+    },
+    Uniform3fv_B: function (uid, d) {
+        var gc = nkJSObject.GetObject(uid);
+        var ul = nkJSObject.GetObject(Module.HEAP32[(d)>>2]);
+        var count = Module.HEAP32[(d+4)>>2];
+        gc.uniform3fv(ul, new Float32Array(Module.HEAPU8.buffer, d+8, count));
+    },
+    Uniform4fv_B: function (uid, d) {
+        var gc = nkJSObject.GetObject(uid);
+        var ul = nkJSObject.GetObject(Module.HEAP32[(d)>>2]);
+        var count = Module.HEAP32[(d+4)>>2];
+        gc.uniform4fv(ul, new Float32Array(Module.HEAPU8.buffer, d+8, count));
+    },
+    UniformMatrix2fv_B: function (uid, d) {
+        var gc = nkJSObject.GetObject(uid);
+        var ul = nkJSObject.GetObject(Module.HEAP32[(d)>>2]);
+        var count = Module.HEAP32[(d+4)>>2];
+        gc.uniformMatrix2fv(ul, false, new Float32Array(Module.HEAPU8.buffer, d+8, count));
+    },
+    UniformMatrix3fv_B: function (uid, d) {
+        var gc = nkJSObject.GetObject(uid);
+        var ul = nkJSObject.GetObject(Module.HEAP32[(d)>>2]);
+        var count = Module.HEAP32[(d+4)>>2];
+        gc.uniformMatrix3fv(ul, false, new Float32Array(Module.HEAPU8.buffer, d+8, count));
+    },
+    UniformMatrix4fv_B: function (uid, d) {
+        var gc = nkJSObject.GetObject(uid);
+        var ul = nkJSObject.GetObject(Module.HEAP32[(d)>>2]);
+        var count = Module.HEAP32[(d+4)>>2];
+        gc.uniformMatrix4fv(ul, false, new Float32Array(Module.HEAPU8.buffer, d+8, count));
+    },
+
     CompileShader: function (uid, d)
     {
         var gc = nkJSObject.GetObject(uid);
@@ -920,6 +990,23 @@ window.nkCanvasGLContext =
         var dt = new Uint8Array(Module.HEAPU8.buffer, arrPtr + si * st, ln * st);
 
         gc.bufferSubData(bt, of, dt);
+    },
+
+    // --- Inline-buffered buffer data handlers (_B suffix) ---
+    // Data is inlined in the command buffer as raw bytes. Format: [type/target, usage/offset, byteLen, data...]
+    BufferData1_B: function (uid, d) {
+        var gc = nkJSObject.GetObject(uid);
+        var bt = Module.HEAP32[(d)>>2];
+        var us = Module.HEAP32[(d+4)>>2];
+        var byteLen = Module.HEAP32[(d+8)>>2];
+        gc.bufferData(bt, new Uint8Array(Module.HEAPU8.buffer, d+12, byteLen), us);
+    },
+    BufferSubData_B: function (uid, d) {
+        var gc = nkJSObject.GetObject(uid);
+        var bt = Module.HEAP32[(d)>>2];
+        var of = Module.HEAP32[(d+4)>>2];
+        var byteLen = Module.HEAP32[(d+8)>>2];
+        gc.bufferSubData(bt, of, new Uint8Array(Module.HEAPU8.buffer, d+12, byteLen));
     },
 
     VertexAttribPointer: function (uid, d)
