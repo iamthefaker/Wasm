@@ -15,6 +15,13 @@ namespace nkast.Wasm.Dom
         private Storage _sessionStorage;
         private Storage _localStorage;
 
+        /// <summary>
+        ///     Set by the host application (e.g. Index.razor.cs) before the game starts.
+        ///     Used to scale mouse/touch CSS pixel coordinates to native canvas pixels
+        ///     when the canvas renders at native resolution (CSS × devicePixelRatio).
+        /// </summary>
+        public static float InputDprScale { get; set; } = 1f;
+
         public delegate void AnimationFrameCallback(TimeSpan time);
         public delegate void TimeoutCallback();
         public delegate void IntervalCallback();
@@ -351,7 +358,10 @@ namespace nkast.Wasm.Dom
             Window wnd = WindowFromUid(uid);
             var handler = wnd.OnMouseMove;
             if (handler != null)
-                handler(wnd, x, y);
+            {
+                float d = InputDprScale;
+                handler(wnd, (int)(x * d), (int)(y * d));
+            }
         }
 
         [JSInvokable]
@@ -360,7 +370,10 @@ namespace nkast.Wasm.Dom
             Window wnd = WindowFromUid(uid);
             var handler = wnd.OnMouseDown;
             if (handler != null)
-                handler(wnd, x, y, buttons);
+            {
+                float d = InputDprScale;
+                handler(wnd, (int)(x * d), (int)(y * d), buttons);
+            }
         }
 
         [JSInvokable]
@@ -369,7 +382,10 @@ namespace nkast.Wasm.Dom
             Window wnd = WindowFromUid(uid);
             var handler = wnd.OnMouseUp;
             if (handler != null)
-                handler(wnd, x, y, buttons);
+            {
+                float d = InputDprScale;
+                handler(wnd, (int)(x * d), (int)(y * d), buttons);
+            }
         }
 
         [JSInvokable]
@@ -387,7 +403,10 @@ namespace nkast.Wasm.Dom
             Window wnd = WindowFromUid(uid);
             var handler = wnd.OnTouchStart;
             if (handler != null)
-                handler(wnd, x, y, identifier);
+            {
+                float d = InputDprScale;
+                handler(wnd, x * d, y * d, identifier);
+            }
         }
 
         [JSInvokable]
@@ -396,7 +415,10 @@ namespace nkast.Wasm.Dom
             Window wnd = WindowFromUid(uid);
             var handler = wnd.OnTouchMove;
             if (handler != null)
-                handler(wnd, x, y, identifier);
+            {
+                float d = InputDprScale;
+                handler(wnd, x * d, y * d, identifier);
+            }
         }
 
         [JSInvokable]
@@ -405,7 +427,10 @@ namespace nkast.Wasm.Dom
             Window wnd = WindowFromUid(uid);
             var handler = wnd.OnTouchEnd;
             if (handler != null)
-                handler(wnd, x, y, identifier);
+            {
+                float d = InputDprScale;
+                handler(wnd, x * d, y * d, identifier);
+            }
         }
 
         [JSInvokable]
